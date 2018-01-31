@@ -36,25 +36,6 @@
      (else (cons (car lis) (removedups (cdr lis))))
      )))
 
-;;#4: split: returns two new lists, with first list containing odd index atoms of the original list, and second list containing even index items of original list
-;;params: lis: list of atoms
-(define split
-  (lambda (lis)
-    (cond
-     ((null? lis)'(() ()))
-     
-
-INCOMPLETE!!
-;;#6: numparens: returns number of parentheses pairs in list
-;; params: lis: list 
-(define numparens
-  (lambda (lis)
-    (cond
-     ((null? lis) 1)
-     ((list? (car lis)) (or (eq? 1 (numparens (car lis))))
-      (+ 1 (numparens (cdr lis))))
-     (else (numparens (cdr lis)))
-     )))
 
 ;;#7: dup*: returns a list with all atoms in the list duplicated
 ;; params: lis: list of atoms, may include sublists
@@ -62,5 +43,6 @@ INCOMPLETE!!
   (lambda (lis)
     (cond
       ((null? lis) '())
-      ((cons (car lis) (cons(car lis) (dup*(cdr lis)))))
+      ((list? (car lis)) (cons (cons(dup*(car lis)) (dup*(car lis))) (dup*(cdr lis))))
+      (else (cons (car lis) (cons(car lis) (dup*(cdr lis)))))
       )))
