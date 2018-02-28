@@ -4,8 +4,8 @@
   (lambda (n lis return)
 	(cond
 	 ((null? lis) (return (cons n '())))
-         ((> (car lis) n) (return (cons n (cons (car lis) (cdr lis)))))
-         (else (insert-cps n (cdr lis) (lambda (v) (return (cons (car lis) v))))))))
+	 ((> (car lis) n) (return (cons n (cons (car lis) (cdr lis)))))
+	 (else (insert-cps n (cdr lis) (lambda (v) (return (cons (car lis) v))))))))
 
 (define insert
   (lambda (n lis)
@@ -64,3 +64,29 @@
 (define dup*
   (lambda (lis)
     (dup*-cps lis (lambda (v) v))))
+
+;;#6: removedups*: removes repeating adjacent atoms in the same sublist
+;;params: lis: list of atoms, including sublists
+(define removedups*-cps
+  (lambda (lis return)
+    (cond
+	 ((null? lis) (return lis))
+	 ((null? (cdr lis)) (return lis))
+	 ((list? (car lis)) (removedups*-cps (car lis) (lambda (v1) (removedups*-cps (cdr lis) (lambda (v2) (return (cons v1 v2)))))))
+	 ((eq? (car lis) (cadr lis)) (removedups*-cps (cdr lis) (lambda (v) (return v))))
+	 (else (removedups*-cps (cdr lis) (lambda (v) (return (cons (car lis) v))))))))
+
+(define removedups*
+  (lambda (lis)
+	(removedups*-cps lis (lambda (v) v))))
+
+;;#7: mergesort: sorts a list of integers
+;;params: lis, list of integers, unsorted
+(define split-cps
+  (lambda (lis return)
+    (cond
+      ((null? lis) (return '() '()))
+      ((null? (cdr lis)) (return lis '()))
+      (else (split-cps (cddr lis) (lambda (v1 v2) (return (cons (car lis) v1) (cons (cadr lis) v2))))))))
+
+split continuation: (lambda (v1 v2) (list v1 v2))
