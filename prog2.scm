@@ -89,4 +89,19 @@
       ((null? (cdr lis)) (return lis '()))
       (else (split-cps (cddr lis) (lambda (v1 v2) (return (cons (car lis) v1) (cons (cadr lis) v2))))))))
 
+(define merge-cps
+  (lambda (l r return)
+    (cond
+     ((null? l) (return r))
+     ((null? r) (return l))
+     ((< (car l) (car r)) (merge-cps (cdr l) r (lambda (v) (return (cons (car l) v)))))
+     (else (merge-cps l (cdr r) (lambda (v) (return (cons (car r) v))))))))
+
 split continuation: (lambda (v1 v2) (list v1 v2))
+
+;;9: suffix: returns list containing elements after last occurence of a specified atom
+;;params: lis: list of atoms, x: specified atom
+(define suffix-helper
+  (lambda (lis x)
+    (cond
+     ((null? lis)
